@@ -7,7 +7,7 @@ from doom_network_dqn import *
 from torch import optim
 from doom_agent_dqn import *
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-case = 'testing'
+case = 'training'
 
 scenario = 'basic'
 episodes = 200
@@ -29,7 +29,6 @@ update_save = 50
 if case == 'training':
     doom_env = VizDoomEnv(render=True)
     policy = DoomDQN(doom_env.get_num_actions(),device).to(device)
-    policy.load_state_dict(torch.load("./final_models/basic.pth"))
     target = DoomDQN(doom_env.get_num_actions(),device).to(device)
     target.load_state_dict(policy.state_dict())
     optimizer = optim.RMSprop(policy.parameters(),lr=lr)

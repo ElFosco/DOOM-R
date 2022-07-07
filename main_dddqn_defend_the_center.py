@@ -31,7 +31,6 @@ update_save = 1000
 if case == 'training':
     doom_env = VizDoomEnv(render=True,scenario=scenario,difficulty=3)
     policy = DoomDDQN(doom_env.get_num_actions(),device).to(device)
-    #policy.load_state_dict(torch.load("./checkpoint/policy_dddqn_defend_the_center.pth"))
     target = DoomDDQN(doom_env.get_num_actions(),device).to(device)
     target.load_state_dict(policy.state_dict())
     optimizer = optim.RMSprop(policy.parameters(),lr=lr)
@@ -41,8 +40,6 @@ if case == 'training':
                               update_policy=update_policy,update_eval=update_eval,update_save=update_save)
     survive_time = doom_agent.learn()
     torch.save(doom_agent.policy.state_dict(), "./checkpoint/policy_dddqn_{}_{}_{}_{}_ft.pth".format(lr,episodes,batch_size,scenario))
-    #survive_time = doom_agent.eval()
-    #print(survive_time)
     plt.plot(range(update_eval,episodes+1,update_eval),survive_time)
     plt.title("Survive time")
     plt.xlabel("Episodes")
