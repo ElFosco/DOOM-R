@@ -1,10 +1,10 @@
 import numpy as np
 from vizdoom import *
-from gym import Env
 
 
 
-class VizDoomEnv(Env):
+
+class VizDoomEnv():
 
     def __init__(self, scenario="basic",difficulty=5,render=False):
         super().__init__()
