@@ -1,0 +1,7 @@
+BASIC
+Lr: 0.1   episodes: 100    AVG REWARD: -4.0
+Lr: 0.1   episodes: 100    AVG REWARD: -4.0
+Lr: 0.001   episodes: 100    bs: 256    AVG REWARD: 45.45
+Lr: 0.001   episodes: 100    bs: 512    AVG REWARD: 80.4
+Lr: 0.001   episodes: 200    bs: 256    AVG REWARD: 97.22
+
