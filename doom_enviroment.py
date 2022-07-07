@@ -11,7 +11,7 @@ class VizDoomEnv(Env):
 
         self.scenario = scenario
         self.game = DoomGame()
-        self.game.load_config('./VizDoom/scenarios/{}.cfg'.format(scenario))
+        self.game.load_config('./scenarios/{}.cfg'.format(scenario))
 
         self.game.set_doom_skill(difficulty)
         if render == False:

@@ -7,7 +7,7 @@ from doom_network_dqn import *
 from torch import optim
 from doom_agent_dqn import *
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-case = 'training'
+case = 'testing'
 
 scenario = 'basic'
 episodes = 200
