@@ -1,15 +1,11 @@
+import torch
 import torch.nn as nn
 
 
 
-class DoomDQN(nn.Module):
+class DoomDDQN(nn.Module):
     def __init__(self, n_actions,device):
-        '''
-        Definition of the actor networks
-        :param input_shape: size of the input that the network will receive
-        :param n_actions: number of actions that the actor can make
-        '''
-        super(DoomDQN,self).__init__()
+        super(DoomDDQN,self).__init__()
         self.n_action = n_actions
         self.device = device
         self.network = nn.Sequential(
@@ -21,15 +17,22 @@ class DoomDQN(nn.Module):
             nn.ReLU(),
             nn.Conv2d(128, 64, kernel_size=3, stride=1),
             nn.Flatten(start_dim=0),
-            nn.Linear(in_features= 1600, out_features=512),
+        )
+        self.v = nn.Sequential(
+            nn.Linear(in_features=1600, out_features=512),
+            nn.ReLU(),
+            nn.Linear(in_features=512, out_features=1)
+        )
+        self.a = nn.Sequential(
+            nn.Linear(in_features=1600, out_features=512),
             nn.ReLU(),
             nn.Linear(in_features=512, out_features=self.n_action)
         )
 
     def forward(self, input):
-        '''
-        :param x: input of the networks
-        :return: probabilities of picking certain actions, state value
-        '''
         input = input.to(self.device)
-        return self.network(input)
+        output = self.network(input)
+        v = self.v(output)
+        a = self.a(output)
+        output = v + a - torch.mean(a)
+        return output

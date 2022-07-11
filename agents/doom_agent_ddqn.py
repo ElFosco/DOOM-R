@@ -4,8 +4,8 @@ import torch
 import torch.nn as nn
 from tqdm import tqdm
 from skimage import transform
-from replay_memory import ReplayMemory
-import matplotlib.pyplot as plt
+from replaymemory.replay_memory import ReplayMemory
+
 
 class DoomAgentDDQN:
     def __init__(self,starting_eps,ending_eps,env,policy,target,total_steps,batch_size,capacity,device,gamma,optimizer,
@@ -130,60 +130,61 @@ class DoomAgentDDQN:
                 break
 
     def eval(self):
-        if self.env.scenario == "basic":
-            reward_list = []
-            self.policy.eval()
-            for _ in tqdm(range(40)):
-                final_reward = 0
-                state = self.env.start()
-                preprocessed_img = self.preprocessing_img(state)
-                stacked_img = self.stack_starting_img(preprocessed_img)
-                while True:
-                    action = torch.argmax(self.policy(stacked_img))
-                    state_to_append, reward, done = self.env.step(action.cpu().detach().numpy())
-                    final_reward += reward
-                    if done:
-                        break
-                    else:
-                        state_to_append = self.preprocessing_img(state_to_append)
-                        stacked_img = self.stack_images(stacked_img, state_to_append)
-                reward_list.append(final_reward)
-        if self.env.scenario == "defend_the_center":
-            reward_list = []
-            self.policy.eval()
-            for _ in tqdm(range(40)):
-                final_reward = 0
-                state = self.env.start()
-                preprocessed_img = self.preprocessing_img(state)
-                stacked_img = self.stack_starting_img(preprocessed_img)
-                while True:
-                    action = torch.argmax(self.policy(stacked_img))
-                    state_to_append, reward, done = self.env.step(action.cpu().detach().numpy())
-                    final_reward += 1
-                    if done:
-                        break
-                    else:
-                        state_to_append = self.preprocessing_img(state_to_append)
-                        stacked_img = self.stack_images(stacked_img, state_to_append)
-                reward_list.append(final_reward)
-        if self.env.scenario == "deadly_corridor":
-            reward_list = []
-            self.policy.eval()
-            for _ in tqdm(range(5)):
-                final_reward = 0
-                state = self.env.start()
-                preprocessed_img = self.preprocessing_img(state)
-                stacked_img = self.stack_starting_img(preprocessed_img)
-                while True:
-                    action = torch.argmax(self.policy(stacked_img))
-                    state_to_append, reward, done = self.env.step(action.cpu().detach().numpy())
-                    final_reward += reward
-                    if done:
-                        break
-                    else:
-                        state_to_append = self.preprocessing_img(state_to_append)
-                        stacked_img = self.stack_images(stacked_img, state_to_append)
-                reward_list.append(final_reward)
+        with torch.no_grad():
+            if self.env.scenario == "basic":
+                reward_list = []
+                self.policy.eval()
+                for _ in tqdm(range(40)):
+                    final_reward = 0
+                    state = self.env.start()
+                    preprocessed_img = self.preprocessing_img(state)
+                    stacked_img = self.stack_starting_img(preprocessed_img)
+                    while True:
+                        action = torch.argmax(self.policy(stacked_img))
+                        state_to_append, reward, done = self.env.step(action.cpu().detach().numpy())
+                        final_reward += reward
+                        if done:
+                            break
+                        else:
+                            state_to_append = self.preprocessing_img(state_to_append)
+                            stacked_img = self.stack_images(stacked_img, state_to_append)
+                    reward_list.append(final_reward)
+            if self.env.scenario == "defend_the_center":
+                reward_list = []
+                self.policy.eval()
+                for _ in tqdm(range(40)):
+                    final_reward = 0
+                    state = self.env.start()
+                    preprocessed_img = self.preprocessing_img(state)
+                    stacked_img = self.stack_starting_img(preprocessed_img)
+                    while True:
+                        action = torch.argmax(self.policy(stacked_img))
+                        state_to_append, reward, done = self.env.step(action.cpu().detach().numpy())
+                        final_reward += 1
+                        if done:
+                            break
+                        else:
+                            state_to_append = self.preprocessing_img(state_to_append)
+                            stacked_img = self.stack_images(stacked_img, state_to_append)
+                    reward_list.append(final_reward)
+            if self.env.scenario == "deadly_corridor":
+                reward_list = []
+                self.policy.eval()
+                for _ in tqdm(range(5)):
+                    final_reward = 0
+                    state = self.env.start()
+                    preprocessed_img = self.preprocessing_img(state)
+                    stacked_img = self.stack_starting_img(preprocessed_img)
+                    while True:
+                        action = torch.argmax(self.policy(stacked_img))
+                        state_to_append, reward, done = self.env.step(action.cpu().detach().numpy())
+                        final_reward += reward
+                        if done:
+                            break
+                        else:
+                            state_to_append = self.preprocessing_img(state_to_append)
+                            stacked_img = self.stack_images(stacked_img, state_to_append)
+                    reward_list.append(final_reward)
         return np.mean(np.array(reward_list))
 
 

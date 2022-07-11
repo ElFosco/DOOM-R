@@ -3,6 +3,6 @@ The scope of the project is to develop a DQN agent, capable of playing different
 # How to run it?
 Simply runs the main files, each of them is associated to a scenario and a technique, inside each of them there's a flag called case, switch it between 'training' and 'testing' based on what you want.
 # Final results - BASIC
-![](./basic.gif)
+![](data&documents/basic.gif)
 # Final results - DEFEND THE CENTER
-![](./dtc.gif)
+![](data&documents/dtc.gif)

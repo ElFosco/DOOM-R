@@ -1,10 +1,9 @@
-import numpy as np
-import torch
+from matplotlib import pyplot as plt
 
-from doom_enviroment import *
-from doom_network_dqn import *
+from env.doom_enviroment import *
+from networks.doom_network_dqn import *
 from torch import optim
-from doom_agent_dqn import *
+from agents.doom_agent_dqn import *
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 case = 'testing'
