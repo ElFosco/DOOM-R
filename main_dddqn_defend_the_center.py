@@ -1,3 +1,5 @@
+from matplotlib import pyplot as plt
+
 from agents.doom_agent_ddqn import DoomAgentDDQN
 from env.doom_enviroment import *
 from networks.doom_network_ddqn import DoomDDQN

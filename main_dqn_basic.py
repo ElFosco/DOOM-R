@@ -1,3 +1,5 @@
+from matplotlib import pyplot as plt
+
 from env.doom_enviroment import *
 from networks.doom_network_dqn import *
 from torch import optim
